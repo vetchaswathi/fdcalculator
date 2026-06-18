@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>FD Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: pink;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            border: 10px solid grey;
+            box-sizing: border-box;
+        }
+
+        .calculator {
+            background-color:white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            width: 350px;
+        }
+
+        .input-section {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="range"] {
+            width: 100%;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: grey;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: black;
+        }
+
+        .output-section {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="calculator">
+    <h1>FD Calculator</h1>
+
+    <div class="input-section">
+        <label for="investment">Investment</label>
+        <input type="range" id="investment" min="1000" max="1000000" step="1000" value="100000">
+        <span id="investment-value">100000</span>
+    </div>
+
+    <div class="input-section">
+        <label for="interest-rate">Rate of Interest</label>
+        <input type="range" id="interest-rate" min="0" max="18" step="0.1" value="6.5">
+        <span id="interest-rate-value">6.5%</span>
+    </div>
+
+    <div class="input-section">
+        <label for="time-period">Tenure</label>
+        <input type="range" id="time-period" min="1" max="65" step="1" value="6">
+        <span id="time-period-value">6 years</span>
+    </div>
+
+    <button onclick="calculateFD()">Invest</button>
+
+    <div class="output-section">
+        <p>Invested Amount: <span id="invested-amount">---</span></p>
+        <p>Estimated Return: <span id="estimated-amount">---</span></p>
+        <p>Total Amount: <span id="total-amount">---</span></p>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+    const investmentInput = document.getElementById('investment');
+    const interestRateInput = document.getElementById('interest-rate');
+    const timePeriodInput = document.getElementById('time-period');
+
+    investmentInput.addEventListener('input', function () {
+        updateInvestment(this.value);
+    });
+
+    interestRateInput.addEventListener('input', function () {
+        updateInterestRateValue(this.value);
+    });
+
+    timePeriodInput.addEventListener('input', function () {
+        updateTimePeriodValue(this.value);
+    });
+
+    updateInvestment(investmentInput.value);
+    updateInterestRateValue(interestRateInput.value);
+    updateTimePeriodValue(timePeriodInput.value);
+});
+
+function calculateFD() {
+    const p = parseFloat(document.getElementById('investment').value);
+    const r = parseFloat(document.getElementById('interest-rate').value);
+    const t = parseFloat(document.getElementById('time-period').value);
+
+    const n = 4; 
+
+    const total = p * Math.pow(1 + (r / (n * 100)), n * t);
+    const interest = total - p;
+
+    document.getElementById('invested-amount').innerText =
+        p.toLocaleString('en-IN');
+
+    document.getElementById('estimated-amount').innerText =
+        Math.round(interest).toLocaleString('en-IN');
+
+    document.getElementById('total-amount').innerText =
+        Math.round(total).toLocaleString('en-IN');
+}
+
+function updateInvestment(value) {
+    document.getElementById('investment-value').innerText =
+        parseFloat(value).toLocaleString('en-IN');
+}
+
+function updateInterestRateValue(value) {
+    document.getElementById('interest-rate-value').innerText =
+        parseFloat(value).toFixed(1) + "%";
+}
+
+function updateTimePeriodValue(value) {
+    document.getElementById('time-period-value').innerText =
+        value + " years";
+}
+</script>
+
+</body>
+</html>
